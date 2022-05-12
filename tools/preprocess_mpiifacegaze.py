@@ -13,9 +13,9 @@ def add_mat_data_to_hdf5(person_id: str, dataset_dir: pathlib.Path,
     with h5py.File(dataset_dir / f'{person_id}.mat', 'r') as f_input:
         images = f_input.get('Data/data')[()]
         labels = f_input.get('Data/label')[()][:, :4]
-    assert len(images) == len(labels) == 3000
-
+        
     images = images.transpose(0, 2, 3, 1).astype(np.uint8)
+    print("Transposed")
     poses = labels[:, 2:]
     gazes = labels[:, :2]
 
@@ -23,6 +23,7 @@ def add_mat_data_to_hdf5(person_id: str, dataset_dir: pathlib.Path,
         for index, (image, gaze,
                     pose) in tqdm.tqdm(enumerate(zip(images, gazes, poses)),
                                        leave=False):
+            print("Creating dataset")
             f_output.create_dataset(f'{person_id}/image/{index:04}',
                                     data=image)
             f_output.create_dataset(f'{person_id}/pose/{index:04}', data=pose)

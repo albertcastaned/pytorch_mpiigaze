@@ -160,6 +160,8 @@ def main():
         validate(0, model, loss_function, val_loader, config,
                  tensorboard_writer, logger)
 
+    start = time.time()
+
     for epoch in range(1, config.scheduler.epochs + 1):
         train(epoch, model, optimizer, scheduler, loss_function, train_loader,
               config, tensorboard_writer, logger)
@@ -174,6 +176,9 @@ def main():
             checkpoint_config = {'epoch': epoch, 'config': config.as_dict()}
             checkpointer.save(f'checkpoint_{epoch:04d}', **checkpoint_config)
 
+    elapsed = time.time() - start
+
+    tensorboard_writer.add_text("Training time",  f"{round(elapsed, 2)} seconds")
     tensorboard_writer.close()
 
 
