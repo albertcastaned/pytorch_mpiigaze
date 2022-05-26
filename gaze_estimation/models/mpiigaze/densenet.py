@@ -20,19 +20,17 @@ class Model(nn.Module):
             padding=0,
             bias=False,
         )
-        self.conv1_batch = nn.BatchNorm2d(3)
-        self.conv1_relu = nn.ReLU(inplace=True)
+        # self.conv1_batch = nn.BatchNorm2d(3)
+        # self.conv1_relu = nn.ReLU(inplace=True)
 
         self.pretrained_model = pretrained_model
-        self.pretrained_model.classifier = nn.Linear(1024, 2)
         self.pretrained_model.classifier = nn.Linear(num_ftrs, 2)
 
-        print(self)
 
     def _forward_conv(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv1(x)
-        x = self.conv1_batch(x)
-        x = self.conv1_relu(x)
+        # x = self.conv1_batch(x)
+        # x = self.conv1_relu(x)
         return self.pretrained_model(x)
 
 

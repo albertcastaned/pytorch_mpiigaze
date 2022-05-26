@@ -15,7 +15,7 @@ train:
   seed: 0
   test_id: 0
   val_ratio: 0.1
-  output_dir: experiments/mpiigaze/googlenet/exp00
+  output_dir: experiments/mpiigaze/googlenet/exp02
   log_period: 100
   checkpoint_period: 10
   use_tensorboard: True
@@ -27,11 +27,13 @@ train:
     num_workers: 4
     pin_memory: False
 scheduler:
-  epochs: 10
-  type: multistep
-  milestones: [30, 35]
-  lr_decay: 0.1
-  lr_min_factor: 0.001
+  epochs: 15
+  type: onecycle
+  max_lr: 0.01
+  pct_start: 0.3
+  three_phase: True
+  div_factor: 2
+  final_div_factor: 3
 cudnn:
   benchmark: True
   deterministic: False

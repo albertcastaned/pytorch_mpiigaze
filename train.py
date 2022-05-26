@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import math
 
 import torch
 import torchvision.utils
@@ -54,6 +55,7 @@ def train(epoch, model, optimizer, scheduler, loss_function, train_loader,
 
         num = images.size(0)
         loss_meter.update(loss.item(), num)
+        
         angle_error_meter.update(angle_error.item(), num)
 
         if step % config.train.log_period == 0:
@@ -63,6 +65,9 @@ def train(epoch, model, optimizer, scheduler, loss_function, train_loader,
                         f'loss {loss_meter.val:.4f} ({loss_meter.avg:.4f}) '
                         f'angle error {angle_error_meter.val:.2f} '
                         f'({angle_error_meter.avg:.2f})')
+
+        if config.scheduler.type == 'onecycle':
+            scheduler.step()
 
     elapsed = time.time() - start
     logger.info(f'Elapsed {elapsed:.2f}')
@@ -113,6 +118,7 @@ def validate(epoch, model, loss_function, val_loader, config,
             loss_meter.update(loss.item(), num)
             angle_error_meter.update(angle_error.item(), num)
 
+
     logger.info(f'Epoch {epoch} '
                 f'loss {loss_meter.avg:.4f} '
                 f'angle error {angle_error_meter.avg:.2f}')
@@ -148,7 +154,7 @@ def main():
     model = create_model(config)
     loss_function = create_loss(config)
     optimizer = create_optimizer(config, model)
-    scheduler = create_scheduler(config, optimizer)
+    scheduler = create_scheduler(config, optimizer, train_loader)
     checkpointer = Checkpointer(model,
                                 optimizer=optimizer,
                                 scheduler=scheduler,
@@ -165,7 +171,9 @@ def main():
     for epoch in range(1, config.scheduler.epochs + 1):
         train(epoch, model, optimizer, scheduler, loss_function, train_loader,
               config, tensorboard_writer, logger)
-        scheduler.step()
+              
+        if config.scheduler.type != "onecycle":
+            scheduler.step()
 
         if epoch % config.train.val_period == 0:
             validate(epoch, model, loss_function, val_loader, config,

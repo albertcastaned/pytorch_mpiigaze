@@ -14,8 +14,8 @@ train:
   loss: L2
   seed: 0
   test_id: -1
-  val_ratio: 0.0
-  output_dir: experiments/mpiigaze/lenet/exp00
+  val_ratio: 0.1
+  output_dir: experiments/mpiigaze/lenet/exp03
   log_period: 100
   checkpoint_period: 10
   use_tensorboard: True
@@ -27,11 +27,11 @@ train:
     num_workers: 4
     pin_memory: False
 scheduler:
-  epochs: 10
-  type: multistep
-  milestones: [8, 9]
-  lr_decay: 0.1
-  lr_min_factor: 0.001
+  epochs: 15
+  type: onecycle
+  div_factor: 2
+  final_div_factor: 3
+  max_lr: 0.01
 cudnn:
   benchmark: True
   deterministic: False

@@ -106,6 +106,8 @@ class Model(nn.Module):
 
         self.linear = nn.Linear(1024, 2)
 
+        print(self)
+
     def _forward_conv(self, x):
         x = self.prelayer(x)
         x = self.maxpool(x)

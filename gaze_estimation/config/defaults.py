@@ -51,6 +51,8 @@ config.tensorboard.train_images = False
 config.tensorboard.val_images = False
 config.tensorboard.model_params = False
 
+config.train.freeze = False
+
 # optimizer
 config.optim = ConfigNode()
 # Adam
@@ -60,11 +62,18 @@ config.optim.adam.betas = (0.9, 0.999)
 # scheduler
 config.scheduler = ConfigNode()
 config.scheduler.epochs = 40
-# scheduler (options: multistep, cosine)
+# scheduler (options: multistep, cosine, onecycle)
 config.scheduler.type = 'multistep'
 config.scheduler.milestones = [20, 30]
 config.scheduler.lr_decay = 0.1
 config.scheduler.lr_min_factor = 0.001
+# one cycle
+config.scheduler.max_lr=0.01
+config.scheduler.three_phase=True
+config.scheduler.pct_start = 0.3
+config.scheduler.div_factor = 1
+config.scheduler.final_div_factor = 10
+config.scheduler.verbose = False
 
 # train data loader
 config.train.train_dataloader = ConfigNode()

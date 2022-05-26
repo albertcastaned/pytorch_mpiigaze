@@ -1,6 +1,8 @@
 import argparse
 import pathlib
 import random
+import math
+
 from typing import Tuple
 
 import numpy as np
@@ -96,4 +98,8 @@ class AverageMeter:
         self.val = val
         self.sum += val * num
         self.count += num
-        self.avg = self.sum / self.count
+
+        result = float(self.sum / self.count)
+        if math.isnan(result):
+            return
+        self.avg = result

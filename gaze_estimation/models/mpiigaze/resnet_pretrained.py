@@ -13,8 +13,11 @@ class Model(nn.Module):
         super().__init__()
 
         num_ftrs = pretrained_model.fc.in_features
-        for param in pretrained_model.parameters():
-            param.requires_grad = False
+
+        if config.train.freeze == True:
+            print("Freezing")
+            for param in pretrained_model.parameters():
+                param.requires_grad = False
 
         self.conv1 = nn.Conv2d(
             1,
