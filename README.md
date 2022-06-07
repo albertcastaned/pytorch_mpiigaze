@@ -1,4 +1,8 @@
-# A PyTorch implementation of MPIIGaze and MPIIFaceGaze
+# Modified version from original proyect to add additional models and OneCyclePolicy scheduler for research projerct.
+
+## Original Readme:
+
+## A PyTorch implementation of MPIIGaze and MPIIFaceGaze
 
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/hysts/pytorch_mpiigaze.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/hysts/pytorch_mpiigaze)
